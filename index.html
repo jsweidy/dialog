@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>移动弹窗框组件</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
+	<meta name="apple-mobile-web-app-capable"content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telphone=no,email=no"/>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		body{
+			font-size:12px;
+			padding:20px;
+		}
+		button{
+			display:black;
+			width:100%;
+			padding:10px;
+			margin:20px 0;
+			background-color:green;
+			border-radius:10px;
+			color:#fff;
+			border: 1px solid #eee;
+			outline: none;
+		}
+	</style>
+	<link rel="stylesheet" type="text/css" href="./css/dialog.css">
+</head>
+<body>
+    <!--
+	<div class="g-dialog-container">
+		<div class="dialog-window">
+			<div class="dialog-header warning"></div>
+			<div class="dialog-content">你是否要清除购物车</div>
+			<div class="dialog-footer">
+				<button class="green">按钮一</button>
+				<button class="red">按钮二</button>
+			</div>
+		</div>
+	</div>
+	-->
+	<button id="btn1">没有传递任何参数(需手动关闭)</button>
+	<button id="btn2">弹出一个不带任何按钮的警告框，并且2秒后自动关闭</button>
+	<button id="btn3">弹出一个有确认和取消按钮的成功框，点击按钮直接关闭</button>
+	<button id="btn4">>弹出一个有确认按钮的警告框,点击按钮不关闭(需手动关闭)</button>
+	<button id="btn5">弹出一个多组合的按钮框，且按钮样式可定制</button>
+	<button id="btn6">动画一个确认框和删除框,点击确认弹出加载框2秒后自动关闭,点击删除按钮把上一次框关闭</button>
+	<button id="btn7">带动画的对话框</button>
+	<script type="text/javascript" src="js/zepto.js"></script>
+	<script type="text/javascript" src="js/zepto.dialog.js"></script>
+	<script type="text/javascript">
+	    $('#btn1').click(function(){
+	    	var d = $.dialog({
+	    		maskClose:true
+	    	});
+	    });
+	    $('#btn2').click(function(){
+	    	var d = $.dialog({
+	    		type:'warning',
+	    		message:'2秒后关闭',
+	    		maskClose:true,
+	    		delay:2000
+	    	});
+	    });
+	    $('#btn3').click(function(){
+	    	var d = $.dialog({
+	    		type:'ok',
+	    		message:'2秒后关闭',
+	    		maskClose:true,
+	    		buttons:[
+	    		    {
+	    		    	text:'确认'
+	    		    },{
+	    		    	text:'取消'
+	    		    }
+	    		],
+	    		delay:2000
+	    	});
+	    });
+	    $('#btn4').click(function(){
+	    	var d = $.dialog({
+	    		type:'warning',
+	    		message:'我是警告框',
+	    		maskClose:true,
+	    		buttons:[
+	    		    {
+	    		    	type:'red',
+	    		    	text:'确认',
+	    		    	callback:function(){
+	    		    		alert('点击我不会关闭');
+	    		    		return false;
+	    		    	}
+	    		    }
+	    		]
+	    	});
+	    });
+	    $('#btn5').click(function(){
+	    	var d = $.dialog({
+	    		type:'waiting',
+	    		message:'多组合的按钮框',
+	    		maskClose:true,
+	    		buttons:[
+	    		    {
+	    		    	type:'',
+	    		    	text:'默认',
+	    		    	callback:function(){
+	    		    		alert('点击我可以关闭');
+	    		    	}
+	    		    },
+	    		    {
+	    		    	type:'red',
+	    		    	text:'确认',
+	    		    	callback:function(){
+	    		    		alert('点击我可以关闭');
+	    		    	}
+	    		    },
+	    		    {
+	    		    	type:'green',
+	    		    	text:'好吧',
+	    		    	callback:function(){
+	    		    		alert('点击我不会关闭');
+	    		    		return false;
+	    		    	}
+	    		    }
+	    		]
+	    	});
+	    });
+	    $('#btn6').click(function(){
+	    	var dd = $.dialog({
+	    		type:'warning',
+	    		message:'警告框',
+	    		maskClose:true,
+	    		buttons:[
+	    		    {
+	    		    	type:'green',
+	    		    	text:'萌萌哒蓝',
+	    		    	callback:function(){
+	    		    		$.dialog({
+	    		    			type:'waiting',
+	    		    			maskClose:true,
+	    		    			delay:2000
+	    		    		});
+	    		    		return false;
+	    		    	}
+	    		    },
+	    		    {
+	    		    	type:'red',
+	    		    	text:'删除',
+	    		    	callback:function(){
+	    		    		$.dialog({
+	    		    			type:'waiting',
+	    		    			maskClose:true,
+	    		    			buttons:[
+	    		    			    {
+	    		    			    	type:'warning',
+	    		    			    	text:'删除之前的弹框!',
+	    		    			    	callback:function(){
+	    		    			    		dd.close();
+	    		    			    		return false;
+	    		    			    	}
+	    		    			    }
+	    		    			]
+	    		    		})
+	    		    		
+	    		    		return false;
+	    		    	}
+	    		    }
+	    		]
+	    	});
+	    });
+	    $('#btn7').click(function(){
+	    	var d = $.dialog({
+	    		type:'warning',
+	    		message:'你想干嘛',
+	    		maskClose:true,
+	    		buttons:[
+	    		    {
+	    		    	type:'green',
+	    		    	text:'你好？'
+	    		    },{
+	    		    	type:'red',
+	    		    	text:'不好!'
+	    		    }
+	    		],
+	    		effect:true
+	    	});
+	    });
+	</script>
+</body>
+</html>
